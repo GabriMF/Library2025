@@ -20,6 +20,7 @@ public class Biblioteca2025 {
         this.books = new ArrayList();
         this.users = new ArrayList();
         this.loans = new ArrayList();
+        
     }
     
     
