@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mendezfrancogabriel.biblioteca2025.biblioteca2025;
+package com.mendezfrancogabriel.library2025.library2025;
 
 import java.time.LocalDate;
 
