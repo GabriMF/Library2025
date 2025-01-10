@@ -68,8 +68,9 @@ public class Loan {
     @Override
     public String toString() {
         //return "Loan{" + "loanedBook=" + loanedBook + ", userLoan=" + userLoan + ", loanDate=" + loanDate + ", refundDate=" + refundDate + '}';
-        return "_____________________________________________________________________________\n"
-            +"                                  Prestamo                                         "
+        return "\n\n"
+            +"_____________________________________________________________________________\n"
+            +"                   Prestamo a: "+ userLoan +".                               \n"
             +"_____________________________________________________________________________\n"
             +"    - Libro prestado: " + loanedBook + "\n"
             +"    - Usuario beneficiario: " + userLoan + "\n"

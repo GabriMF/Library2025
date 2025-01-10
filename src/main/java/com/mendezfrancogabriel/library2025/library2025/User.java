@@ -15,7 +15,7 @@ public class User {
     private String phoneNumber;
     private String dni;
 
-    public User(String name, String email, String phoneNumber, String dni) {
+    public User(String dni, String name, String email, String phoneNumber) {
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
@@ -62,8 +62,9 @@ public class User {
     
     @Override
     public String toString() {
-        return "_____________________________________________________________________________\n"
-            +"                                  Usuario                                         "
+        return "\n\n"
+            +"_____________________________________________________________________________\n"
+            +"                              "+ name +"                                     \n"
             +"_____________________________________________________________________________\n"
             +"    - Usuario: " + name + "\n"
             +"    - eMail: " + email + "\n"
