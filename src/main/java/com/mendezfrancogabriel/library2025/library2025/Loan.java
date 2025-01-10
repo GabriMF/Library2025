@@ -70,12 +70,12 @@ public class Loan {
         //return "Loan{" + "loanedBook=" + loanedBook + ", userLoan=" + userLoan + ", loanDate=" + loanDate + ", refundDate=" + refundDate + '}';
         return "\n\n"
             +"_____________________________________________________________________________\n"
-            +"                   Prestamo a: "+ userLoan +".                               \n"
+            +"------------------------------- Prestamo ------------------------------------\n"
             +"_____________________________________________________________________________\n"
-            +"    - Libro prestado: " + loanedBook + "\n"
-            +"    - Usuario beneficiario: " + userLoan + "\n"
+            + loanedBook
+            + userLoan
             +"    - Fecha del prestamo: " + loanDate + "\n"
-            +"    - Fecha de devolución: " + refundDate + "\n"
+            +"    - Fecha de devolucion: " + refundDate + "\n"
             +"_____________________________________________________________________________\n";
     }
  

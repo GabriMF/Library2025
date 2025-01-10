@@ -76,7 +76,7 @@ public class Book {
         //return "Book{" + "isbn=" + isbn + ", title=" + title + ", author=" + author + ", genre=" + genre + ", copies=" + copies + '}';
         return "\n\n"
                 +"_____________________________________________________________________________\n"
-                +"                             "+ title +"                                     \n"
+                +"                                  libro                                      \n"
                 +"_____________________________________________________________________________\n"
                 +"    - Titulo: " + title + "\n"
                 +"    - Autor: " + author + "\n"
