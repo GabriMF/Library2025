@@ -41,7 +41,7 @@ public class Loan {
         return loanDate;
     }
 
-    public LocalDate getRefundDate() {
+    public LocalDate getReturnDate() {
         return refundDate;
     }
 
@@ -59,7 +59,7 @@ public class Loan {
         this.loanDate = loanDate;
     }
 
-    public void setRefundDate(LocalDate refundDate) {
+    public void setReturnDate(LocalDate refundDate) {
         this.refundDate = refundDate;
     }
 
@@ -68,15 +68,25 @@ public class Loan {
     @Override
     public String toString() {
         //return "Loan{" + "loanedBook=" + loanedBook + ", userLoan=" + userLoan + ", loanDate=" + loanDate + ", refundDate=" + refundDate + '}';
-        return "\n\n"
-            +"_____________________________________________________________________________\n"
-            +"------------------------------- Prestamo ------------------------------------\n"
-            +"_____________________________________________________________________________\n"
-            + loanedBook
-            + userLoan
-            +"    - Fecha del prestamo: " + loanDate + "\n"
-            +"    - Fecha de devolucion: " + refundDate + "\n"
-            +"_____________________________________________________________________________\n";
+        return "\n\n\n\n\n"
+            +" _____________________________________________________________________________ \n"
+            +"|                                                                             |\n"
+            +"|------------------------------- Prestamo ------------------------------------|\n"
+            +"|_____________________________________________________________________________|\n"
+            +"|                                                                              \n"
+            +"|_________________ Libro _________________                                     \n"
+            +"|    - Titulo: " + loanedBook.getTitle() + "                                   \n"
+            +"|    - ISBN: " + loanedBook.getIsbn() + "                                      \n"
+            +"|                                                                              \n"
+            +"|_________________ Usuario _________________                                   \n"
+            +"|    - Nombre: " + userLoan.getName()+ "                                       \n"
+            +"|    - Dni: " + userLoan.getDni() + "                                          \n"
+            +"|    - Contacto: " + userLoan.getPhoneNumber()+"                               \n"
+            +"|                                                                              \n"
+            +"|_________________ Plazo _________________                                     \n"
+            +"|    - Fecha del prestamo: " + loanDate + "                                    \n"
+            +"|    - Fecha de devolucion: " + refundDate + "                                 \n"
+            +"|_____________________________________________________________________________|\n";
     }
  
 }

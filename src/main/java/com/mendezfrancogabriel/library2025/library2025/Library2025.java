@@ -17,13 +17,13 @@ public class Library2025 {
     private ArrayList <Book> books;
     private ArrayList <User> users;
     private ArrayList <Loan> loans;
-    private ArrayList <Loan> LoanHist;
+    private ArrayList <Loan> loansHist;
 
     public Library2025() {
         this.books = new ArrayList();
         this.users = new ArrayList();
         this.loans = new ArrayList();
-        this.LoanHist = new ArrayList();
+        this.loansHist = new ArrayList();
     }
     
     public static void main(String[] args) {
@@ -199,7 +199,7 @@ public class Library2025 {
                     break;
                 }    
                 case 2:{
-                    refundLoan();
+                    returnLoan();
                     break;
                 } 
                 case 3:{
@@ -281,8 +281,14 @@ public class Library2025 {
     }
 
     private void loanList() {
+        System.out.println("Prestamos activos: ");
         for (Loan l : loans) {
             System.out.println(l);  
+        }
+        
+        System.out.println("\n\n Prestamos expirados: ");
+        for (Loan l : loansHist){
+            System.out.println(l);
         }
     }
     
@@ -296,11 +302,11 @@ public class Library2025 {
         if(pos==-1){
             System.out.println("No hat prestamos con losdatos proporcionados.");
         }else{
-            loans.get(pos).setRefundDate(loans.get(pos).getRefundDate().plusDays(15));
+            loans.get(pos).setReturnDate(loans.get(pos).getReturnDate().plusDays(15));
         }
     }
     
-    private void refundLoan(){
+    private void returnLoan(){
         System.out.println("Datos devolucion:");
         
         String isbnBook = requestIsbn();
@@ -309,8 +315,10 @@ public class Library2025 {
         if (pos==-1){
             System.out.println("No hay prestamos con los datos proporcionados");
         }else{
-            loans.get(pos).setRefundDate(LocalDate.now());
+            loans.get(pos).setReturnDate(LocalDate.now());
             books.get(searchIsbn(isbnBook)).setCopies(books.get(searchIsbn(isbnBook)).getCopies()+1);
+            loansHist.add(loans.get(pos));
+            loans.remove(pos);
         }
     }
     
