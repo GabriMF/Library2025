@@ -29,12 +29,13 @@ public class Library2025 {
     public static void main(String[] args) {
         
         Library2025 b = new Library2025();
-        b.dataLoader();  
+        b.dataLoader();
+        b.outdatedLoan();
         b.mainMenu();
     }
     
     /*
-    ------------------------------------------------ Menus --------------------------------
+    -------------------------------- Menus --------------------------------
     */
     
     private void mainMenu(){
@@ -188,7 +189,9 @@ public class Library2025 {
                     - 1 Para agregar un prestamo.
                     - 2 Para devolver un prestamo.
                     - 3 Para prorrogar un prestamo.
-                    - 4 Para consultar el listado de prestamos.
+                    - 4 Para consultar el listado de prestamos general.
+                    - 5 Para consultar el listado de prestamos de un usuario.
+                    - 6 Para consultar el listado de prestamos de un libro.
 
                     - 0 Para volver al menu principal.
                                                                                                                         """);            
@@ -210,13 +213,24 @@ public class Library2025 {
                     loanList();
                     break;
                 } 
+                case 5:{
+                    
+                    break;
+                }
+                case 6:{
+                    bookListLoaned();
+                    break;
+                }
+                default:{
+                    System.out.println("Introduzca una opcion valida.");
+                }
             }
         }while (option != 0);
     }
     
     
     /*
-    ------------------------------------------------ Gestion Libros --------------------------------
+    -------------------------------- Gestion Libros --------------------------------
     */
     
     private void newBook() {
@@ -236,7 +250,7 @@ public class Library2025 {
     
     
     /*
-    ------------------------------------------------ Gestion Usuarios --------------------------------
+    -------------------------------- Gestion Usuarios --------------------------------
     */
     
     private void newUser() {
@@ -257,26 +271,41 @@ public class Library2025 {
     
     
     /*
-    ------------------------------------------------ Gestion Prestamos --------------------------------
+    -------------------------------- Gestion Prestamos --------------------------------
     */
     
     private void newLoan() {
+        
         System.out.println("Identificación del usuario:");
-        int userPosition = searchDni(requestDni());
+        String dni = requestDni();
+        int userPosition = searchDni(dni);
+        
         if (userPosition==-1){
             System.out.println("No es aún usuario de la biblioteca");
+            
         }else{
             System.out.println("Identificación del libro:"); 
-            int posLibro=searchIsbn(requestIsbn());
+            String isbn = requestIsbn();
+            int posLibro=searchIsbn(isbn);
+            
             if (posLibro==-1){
                 System.out.println("El ISBN pertenece a un libro inexistente");
+                
             } else if (books.get(posLibro).getCopies()>0){
-                LocalDate hoy=LocalDate.now();
-                loans.add(new Loan(books.get(posLibro),users.get(userPosition),hoy,hoy.plusDays(15)));
-                books.get(posLibro).setCopies(books.get(posLibro).getCopies()-1);
+                
+                if((searchLoan(dni, isbn)) == -1){
+                    LocalDate hoy=LocalDate.now();
+                
+                    loans.add(new Loan(books.get(posLibro),users.get(userPosition),hoy,hoy.plusDays(15)));
+                
+                    books.get(posLibro).setCopies(books.get(posLibro).getCopies()-1);
                 }else{
-                    System.out.println("No quedan unidades disponibles del libro");
+                    System.out.println("El usuario ya posee una copia del libro solicitado.");
                 }
+    
+            }else{
+                System.out.println("No quedan unidades disponibles del libro");
+            }
         }
     }
 
@@ -322,11 +351,36 @@ public class Library2025 {
         }
     }
     
+    private void bookListLoaned(){
+        
+        String isbn = requestIsbn();
+        int pos = searchIsbn(isbn);
+        if (pos == -1){
+            System.out.println("El ISBN no coincide con ningun libro existente.");
+        }else{
+            for (Loan ln : loans) {
+                if(ln.getLoanedBook().getIsbn().equals(isbn)){
+                    System.out.println(ln.getUserLoan());
+                }
+            }
+        }  
+    }
     
     /*
-    ------------------------------------------------ Metodos auxiliares --------------------------------
+    -------------------------------- Metodos auxiliares --------------------------------
     */
-        /**
+    
+    private void outdatedLoan(){
+        System.out.println("Prestamos fuera de plazo: ");
+        
+        for(Loan ln : loans){
+            if(ln.getLoanDate().isBefore(LocalDate.now())){
+                System.out.println(ln);
+            }
+        }
+    }
+    
+    /**
      * Método para solicitar por teclado el DNI de un usuario. pdte de validación
      * @return (String) dni del usuario tecleado
      */
@@ -342,7 +396,7 @@ public class Library2025 {
      */
     public String requestIsbn(){
         Scanner sc=new Scanner(System.in);
-        System.out.println("Teclea el isbn del libro:");
+        System.out.println("Por favor, introduzca el ISBN del libro: ");
         String isbn=sc.next();
         return isbn;
     }
@@ -410,6 +464,7 @@ public class Library2025 {
         
         LocalDate hoy= LocalDate.now();
         loans.add(new Loan(books.get(2),users.get(0), hoy,hoy.plusDays(15)));
+        loans.add(new Loan(books.get(2),users.get(2), hoy.minusDays(10),hoy.minusDays(3)));
         loans.add(new Loan(books.get(8),users.get(2), hoy,hoy.plusDays(15)));
         loans.add(new Loan(books.get(5),users.get(4), hoy,hoy.plusDays(15)));
         loans.add(new Loan(books.get(5),users.get(0), hoy,hoy.plusDays(15)));
