@@ -17,11 +17,13 @@ public class Library2025 {
     private ArrayList <Book> books;
     private ArrayList <User> users;
     private ArrayList <Loan> loans;
+    private ArrayList <Loan> LoanHist;
 
     public Library2025() {
         this.books = new ArrayList();
         this.users = new ArrayList();
         this.loans = new ArrayList();
+        this.LoanHist = new ArrayList();
     }
     
     public static void main(String[] args) {
@@ -184,8 +186,8 @@ public class Library2025 {
             Por favor, pulsa alguna de las siguientes opciones:
 
                     - 1 Para agregar un prestamo.
-                    - 2 Para eliminar un prestamo.
-                    - 3 Para modificar un prestamo.
+                    - 2 Para devolver un prestamo.
+                    - 3 Para prorrogar un prestamo.
                     - 4 Para consultar el listado de prestamos.
 
                     - 0 Para volver al menu principal.
@@ -197,11 +199,11 @@ public class Library2025 {
                     break;
                 }    
                 case 2:{
-                    deleteLoan();
+                    refundLoan();
                     break;
                 } 
                 case 3:{
-                    modifyLoan();
+                    extendLoan();
                     break;
                 } 
                 case 4:{
@@ -278,18 +280,39 @@ public class Library2025 {
         }
     }
 
-    private void deleteLoan() {
-    }
-
-    private void modifyLoan() {
-    }
-
     private void loanList() {
         for (Loan l : loans) {
             System.out.println(l);  
         }
     }
     
+    private void extendLoan(){
+        System.out.println("Datos Prorroga: ");
+        
+        String dni = requestDni();
+        String isbn = requestIsbn();
+        int pos = searchLoan(dni,isbn);
+        
+        if(pos==-1){
+            System.out.println("No hat prestamos con losdatos proporcionados.");
+        }else{
+            loans.get(pos).setRefundDate(loans.get(pos).getRefundDate().plusDays(15));
+        }
+    }
+    
+    private void refundLoan(){
+        System.out.println("Datos devolucion:");
+        
+        String isbnBook = requestIsbn();
+        int pos = searchLoan(requestDni(), isbnBook);
+        
+        if (pos==-1){
+            System.out.println("No hay prestamos con los datos proporcionados");
+        }else{
+            loans.get(pos).setRefundDate(LocalDate.now());
+            books.get(searchIsbn(isbnBook)).setCopies(books.get(searchIsbn(isbnBook)).getCopies()+1);
+        }
+    }
     
     
     /*
@@ -346,6 +369,17 @@ public class Library2025 {
             }
         }
         return pos;       
+    }
+    
+    public int searchLoan(String dni, String isbn){
+        int pos = -1;
+        for(int i=0; i<loans.size(); i++){
+            if(loans.get(i).getUserLoan().getDni().equals(dni) && loans.get(i).getLoanedBook().getIsbn().equals(isbn)){
+                pos=i;
+                break;
+            }
+        }
+        return pos;
     }
     
     public void dataLoader(){
