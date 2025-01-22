@@ -380,6 +380,33 @@ public class Library2025 {
         }
     }
     
+    
+     public boolean intChecker(String s){
+        int n;
+        try {
+            n = Integer.parseInt(s);
+            return true;
+            
+        } catch (NumberFormatException e) {
+            return false;
+            
+        }
+    }
+    
+    
+    public boolean doubleChecker(String s){
+        Double n;
+        try {
+            n = Double.parseDouble(s);
+            return true;
+            
+        } catch (NumberFormatException e) {
+            return false;
+            
+        }
+    }
+    
+    
     /**
      * Método para solicitar por teclado el DNI de un usuario. pdte de validación
      * @return (String) dni del usuario tecleado
