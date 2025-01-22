@@ -192,6 +192,8 @@ public class Library2025 {
                     - 4 Para consultar el listado de prestamos general.
                     - 5 Para consultar el listado de prestamos de un usuario.
                     - 6 Para consultar el listado de prestamos de un libro.
+                    - 7 Para consultar el libro mas leido.
+                    - 8 Para consultar el usuario mas lector.
 
                     - 0 Para volver al menu principal.
                                                                                                                         """);            
@@ -221,6 +223,14 @@ public class Library2025 {
                     bookListLoaned();
                     break;
                 }
+                case 7:{
+                    mostReadBook();
+                    break;
+                }
+                case 8:{
+                    mostReaderUser();
+                    break;
+                }
                 default:{
                     System.out.println("Introduzca una opcion valida.");
                 }
@@ -234,12 +244,99 @@ public class Library2025 {
     */
     
     private void newBook() {
+        String isbn, title, author, genre;
+        int copies;
+        
+        Scanner sc = new Scanner (System.in);
+        
+        System.out.println("""
+                           __________________________________________________________________________________________________________
+                           
+                                                                         Nuevo Libro
+                           __________________________________________________________________________________________________________""");
+        
+        System.out.println("Titulo: ");
+        title = sc.nextLine();
+        
+        System.out.println("Autor: ");
+        author = sc.nextLine();
+             
+        System.out.println("Genero: ");
+        genre = sc.nextLine();
+        
+        System.out.println("ISBN: ");
+        isbn = sc.nextLine();
+        
+        System.out.println("Ejemplares: ");
+        copies = sc.nextInt();
+        
+        Book newBook = new Book(isbn, title, author, genre, copies);
+        books.add(newBook);
+        
+        System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+            + "El libro " + newBook.getTitle() + " se ha agregado correctamente.\n"
+            + "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n\n");
     }
 
     private void deleteBook() {
+        
+        System.out.println("""
+                           __________________________________________________________________________________________________________
+                           
+                                                                        Eliminar Libro
+                           __________________________________________________________________________________________________________""");
+        
+        Scanner sc = new Scanner (System.in);
+        System.out.println("Introduzca el ISBN del libro que desea eliminar.");
+
+        String isbn = requestIsbn();
+        int bookPosition = searchIsbn(isbn);
+        
+        if (bookPosition == -1){
+            System.out.println("Por favor, introduca un libro registrado.");
+        }else{
+            String deletedBook = books.get(bookPosition).getTitle();
+            books.remove(bookPosition);
+            System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+                    + "El libro " + deletedBook + " ha sido eliminado satisfactoriamente.\n"
+                    + "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n\n");
+        } 
     }
 
     private void modifyBook() {
+        
+        System.out.println("""
+                           __________________________________________________________________________________________________________
+                           
+                                                                         Editar Libro
+                           __________________________________________________________________________________________________________""");
+        
+        Scanner sc=new Scanner (System.in);
+        String isbn;
+        int bookPosition = -1;
+        boolean bookExist = false;
+        do {
+            System.out.println("Escribe el ISBN del libro a editar.");
+            
+            isbn = requestIsbn();
+            bookPosition = searchIsbn(isbn);
+            
+            if(bookPosition == -1){
+                System.out.println("Por favor, introduzca un libro registrado.");
+            }
+            if (bookPosition!=-1){
+                bookExist = true;
+            }
+        } while (bookExist = false);
+
+        System.out.println("Introduzca cuandos libros quiere agregar o restar al total de ejemplares:");
+        int copiesVariation = sc.nextInt();
+        int newCopiesAmount = books.get(bookPosition).getCopies() + copiesVariation;
+        books.get(bookPosition).setCopies(newCopiesAmount);
+ 
+        System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+            + "                 El libro "+ books.get(bookPosition).getTitle() + ", con ISBN " + books.get(bookPosition).getIsbn() +" se ha modificado a correctamente.\n"
+            + "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n\n");
     }
 
     private void bookList() {
@@ -254,12 +351,125 @@ public class Library2025 {
     */
     
     private void newUser() {
+        String dni, name, email, phoneNumber;
+        Scanner sc = new Scanner (System.in);
+        
+        System.out.println("""
+                           __________________________________________________________________________________________________________
+                           
+                                                                         Nuevo Usuario
+                           __________________________________________________________________________________________________________""");
+        
+        System.out.println("Nombre: ");
+        name = sc.nextLine();
+        
+        System.out.println("Telefono: ");
+        phoneNumber = sc.nextLine();
+        
+        System.out.println("Email: ");
+        email = sc.nextLine();
+        
+        System.out.println("DNI: ");
+        dni = sc.nextLine();
+        
+        User newUser = new User(dni, name, email, phoneNumber);
+        users.add(newUser);
+        
+        System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+            + "El usuario " + newUser.getName()+ " se ha agregado correctamente.\n"
+            + "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n\n");
     }
 
     private void deleteUser() {
+        
+        System.out.println("""
+                           __________________________________________________________________________________________________________
+                           
+                                                                        Eliminar Usuario
+                           __________________________________________________________________________________________________________""");
+        
+        Scanner sc = new Scanner (System.in);
+        
+        System.out.println("Introduzca el dni del usuario a eliminar.");
+          
+        String dni = requestDni();       
+        int userPosition = searchDni(dni);
+        
+        if(userPosition == -1){
+            System.out.println("El DNI introducido no esta registrado.\n"
+                    + "Por favor, introduzca el dni de un usuario registrado.");
+        }else{
+            String deletedUserName = users.get(userPosition).getName();
+            String deletedUserDni = users.get(userPosition).getDni();
+            
+            users.remove(userPosition);
+            System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+                    + "El usuario " + deletedUserName + " con DNI "+ deletedUserDni +" ha sido eliminado satisfactoriamente.\n"
+                            + "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n\n");
+        }
     }
 
     private void modifyUser() {
+        
+        System.out.println("""
+                           __________________________________________________________________________________________________________
+                           
+                                                                         Editar Usuario
+                           __________________________________________________________________________________________________________""");
+        
+        Scanner sc = new Scanner (System.in);
+        String userDni;
+        int userPosition = -1;
+        boolean userExist = false;
+        
+        do {
+            System.out.println("Escribe el DNI del usuario a editar.");
+
+            userDni = requestDni();
+            userPosition = searchDni(userDni);
+            
+            if(userPosition==-1){
+                System.out.println("Por favor, introduzca un DNI de un usuario registrado.");
+            }
+            if (userPosition!=-1){
+                userExist = true;
+            }
+        } while (userExist = false);
+        
+        System.out.println("""
+                           Por favor, indicque el valor a modificar.
+                                - 1. Nombre.
+                                - 2. Telefono.
+                                - 3. Correo Electronico.""");
+        int option;
+        option = sc.nextInt();
+        sc.nextLine();
+        switch(option){
+            case 1 :{
+                System.out.println("Introduzca el nuevo nombre:");
+                String newName = new String(sc.nextLine());
+                users.get(userPosition).setName(newName);
+                break;
+            }
+            case 2 :{
+                System.out.println("Introduzca el nuevo telefono:");
+                String newPhoneNumber = new String(sc.nextLine());
+                users.get(userPosition).setPhoneNumber(newPhoneNumber);
+                break;
+            }
+            case 3 :{
+                System.out.println("Introduzca el nuevo correo electronico:");
+                String newEmail = new String(sc.nextLine());
+                users.get(userPosition).setEmail(newEmail);
+                break;
+            }
+            default:{
+                System.out.println("Introduzca una opcion valida.");
+            }
+        } 
+        System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+            + "                 El usuario "+ users.get(userPosition).getName() +" se ha modificado correctamente.\n"
+            + "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n\n");
     }
 
     private void userList() {
@@ -286,68 +496,97 @@ public class Library2025 {
         }else{
             System.out.println("Identificación del libro:"); 
             String isbn = requestIsbn();
-            int posLibro=searchIsbn(isbn);
+            int bookPosition = searchIsbn(isbn);
             
-            if (posLibro==-1){
+            if (bookPosition==-1){
                 System.out.println("El ISBN pertenece a un libro inexistente");
                 
-            } else if (books.get(posLibro).getCopies()>0){
+            } else if (books.get(bookPosition).getCopies()>0){
                 
                 if((searchLoan(dni, isbn)) == -1){
                     LocalDate hoy=LocalDate.now();
                 
-                    loans.add(new Loan(books.get(posLibro),users.get(userPosition),hoy,hoy.plusDays(15)));
+                    loans.add(new Loan(books.get(bookPosition),users.get(userPosition),hoy,hoy.plusDays(15)));
                 
-                    books.get(posLibro).setCopies(books.get(posLibro).getCopies()-1);
+                    books.get(bookPosition).setCopies(books.get(bookPosition).getCopies()-1);
+                    
                 }else{
-                    System.out.println("El usuario ya posee una copia del libro solicitado.");
+                    System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+                                + "El usuario " + users.get(userPosition).getName()+" ya tiene "
+                                + books.get(bookPosition).getTitle()+" prestado.\n"
+                                        + "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n\n");
                 }
     
             }else{
-                System.out.println("No quedan unidades disponibles del libro");
+                System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+                            + "No quedan unidades disponibles del libro\n"
+                            + "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n\n");
             }
-        }
-    }
-
-    private void loanList() {
-        System.out.println("Prestamos activos: ");
-        for (Loan l : loans) {
-            System.out.println(l);  
-        }
-        
-        System.out.println("\n\n Prestamos expirados: ");
-        for (Loan l : loansHist){
-            System.out.println(l);
-        }
-    }
-    
-    private void extendLoan(){
-        System.out.println("Datos Prorroga: ");
-        
-        String dni = requestDni();
-        String isbn = requestIsbn();
-        int pos = searchLoan(dni,isbn);
-        
-        if(pos==-1){
-            System.out.println("No hat prestamos con losdatos proporcionados.");
-        }else{
-            loans.get(pos).setReturnDate(loans.get(pos).getReturnDate().plusDays(15));
         }
     }
     
     private void returnLoan(){
-        System.out.println("Datos devolucion:");
+        System.out.println("Datos para la devolucion del préstamo:");
         
+        System.out.println("Introduzca el ISBN del libro, por favor.");
         String isbnBook = requestIsbn();
+        
         int pos = searchLoan(requestDni(), isbnBook);
         
         if (pos==-1){
             System.out.println("No hay prestamos con los datos proporcionados");
+            
         }else{
+            
             loans.get(pos).setReturnDate(LocalDate.now());
             books.get(searchIsbn(isbnBook)).setCopies(books.get(searchIsbn(isbnBook)).getCopies()+1);
             loansHist.add(loans.get(pos));
             loans.remove(pos);
+            
+            System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+                    + "Devolucion registrada correctamente."
+                    + "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n\n");
+        }
+    }
+    
+    private void extendLoan(){
+        System.out.println("Datos para la prorroga del préstamo.");
+        
+        System.out.println("Introduzca el DNI del usuario.");
+        String dni = requestDni();
+        System.out.println("Introduzca el ISBN del libro.");
+        String isbn = requestIsbn();
+        
+        int pos = searchLoan(dni,isbn);
+        
+        if(pos==-1){
+            System.out.println("No hay prestamos con los datos proporcionados.");
+        }else{
+            loans.get(pos).setReturnDate(loans.get(pos).getReturnDate().plusDays(15));
+            loans.get(pos).setLoanDate(LocalDate.now());
+            
+            System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+                    + "Prorroga registrada correctamente."
+                    + "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n\n");
+        }
+    }
+
+    private void loanList() {
+        System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+                + "                         Listado de prestamos activos"
+                + "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n");
+        for (Loan l : loans) {
+            if (l.getReturnDate().isBefore(LocalDate.now())){
+                        System.out.print("Libro fuera de plazo: ");
+            }
+            System.out.println(l);  
+        }
+        
+        System.out.println("\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+                + "                         Listado de prestamos historicos"
+                + "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n");
+        for (Loan l : loansHist) {
+            System.out.println(l);  
         }
     }
     
@@ -355,15 +594,93 @@ public class Library2025 {
         
         String isbn = requestIsbn();
         int pos = searchIsbn(isbn);
+        
         if (pos == -1){
             System.out.println("El ISBN no coincide con ningun libro existente.");
+            
         }else{
+            System.out.println("Usuarios en posesion:");
             for (Loan ln : loans) {
                 if(ln.getLoanedBook().getIsbn().equals(isbn)){
                     System.out.println(ln.getUserLoan());
                 }
             }
+            
+            System.out.println("Usuarios que lo han leido:");
+            for (Loan ln : loansHist) {
+                if (ln.getLoanedBook().getIsbn().equals(isbn)){
+                    System.out.println(ln.getUserLoan());
+                }
+            }
+            
+            
         }  
+    }
+    
+    private void mostReadBook(){
+        ArrayList <Integer> bookCounter = new ArrayList();
+        int counter;
+        for (Book b : books) {
+            counter=0;
+            for (Loan l : loans) {
+                if (b==l.getLoanedBook()){
+                    counter++;
+                }
+            }
+            for (Loan l : loansHist) {
+                if (b==l.getLoanedBook()){
+                    counter++;
+                }
+            }
+            bookCounter.add(counter);
+        }
+        
+        int max=0;
+        for (int c:bookCounter){
+            if (c>max){
+                max=c;
+            }
+        }
+        System.out.println("El libro mas leido con " + max + " prestamos es: " );
+               
+        for (int i = 0; i < bookCounter.size(); i++) {
+            if (bookCounter.get(i)==max){
+                System.out.println(books.get(i));
+            }
+        }
+    }
+    
+    private void mostReaderUser(){
+        ArrayList <Integer> userCounter=new ArrayList();
+        int counter;
+        for (User u : users) {
+            counter=0;
+            for (Loan l:loans) {
+                if (u==l.getUserLoan()){
+                    counter++;
+                }
+            }
+            for (Loan l:loansHist) {
+                if (u==l.getUserLoan()){
+                    counter++;
+                }
+            }
+            userCounter.add(counter);
+        }
+        
+        int max=0;
+        for (int c:userCounter){
+            if (c>max){
+                max=c;
+            }
+        }
+        System.out.println("El usuario mas lector con " + max + " prestamos es: " );
+               
+        for (int i = 0; i < userCounter.size(); i++) {
+            if (userCounter.get(i)==max){
+                System.out.println(users.get(i));
+            }
+        }
     }
     
     /*
@@ -413,7 +730,6 @@ public class Library2025 {
      */
     public String requestDni(){
         Scanner sc=new Scanner(System.in);
-        System.out.println("Teclea el dni del usuario:");
         String dni=sc.next();
         return dni;
     }
@@ -423,7 +739,6 @@ public class Library2025 {
      */
     public String requestIsbn(){
         Scanner sc=new Scanner(System.in);
-        System.out.println("Por favor, introduzca el ISBN del libro: ");
         String isbn=sc.next();
         return isbn;
     }
@@ -497,18 +812,13 @@ public class Library2025 {
         loans.add(new Loan(books.get(5),users.get(0), hoy,hoy.plusDays(15)));
         loans.add(new Loan(books.get(6),users.get(2), hoy,hoy.plusDays(15)));
         loans.add(new Loan(books.get(2),users.get(1), hoy,hoy.plusDays(15)));
-    /*
-        for (Book b:books) {
-            System.out.println(b);
-        }
-        System.out.println("");
-        for (User u:users) {
-            System.out.println(u);
-        }
-        System.out.println("");
-        for (Loan l:loans) {
-            System.out.println(l);
-        }
-    */
+        
+        loansHist.add(new Loan(books.get(0),users.get(0), hoy.minusDays(20),hoy.minusDays(5)));
+        loansHist.add(new Loan(books.get(2),users.get(0), hoy.minusDays(20),hoy.minusDays(5)));
+        loansHist.add(new Loan(books.get(7),users.get(4), hoy.minusDays(20),hoy.minusDays(5)));
+        loansHist.add(new Loan(books.get(5),users.get(4), hoy.minusDays(20),hoy.minusDays(5)));
+        loansHist.add(new Loan(books.get(1),users.get(1), hoy.minusDays(20),hoy.minusDays(5)));
+        loansHist.add(new Loan(books.get(7),users.get(2), hoy.minusDays(20),hoy.minusDays(5)));
+        loansHist.add(new Loan(books.get(6),users.get(3), hoy.minusDays(20),hoy.minusDays(5)));
     }
 }
